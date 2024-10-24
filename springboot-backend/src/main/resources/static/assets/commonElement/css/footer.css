@@ -1,0 +1,17 @@
+footer {
+  font: var(--body02);
+  padding: 32px 0 12px;
+  text-align: center;
+  position: absolute;
+  bottom: 0;
+  width: -webkit-fill-available;
+}
+
+footer span {
+  display: inline-block;
+  text-wrap: nowrap;
+  margin: 0 0.5em;
+}
+
+@media screen and (min-width: 1024px) {
+}

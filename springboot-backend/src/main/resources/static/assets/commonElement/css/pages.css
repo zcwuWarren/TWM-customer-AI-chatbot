@@ -1,0 +1,128 @@
+body.fixed {
+  overflow: hidden;
+}
+body {
+  position: relative;
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding-bottom: 80px;
+}
+.overlay {
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  left: 0;
+  top: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 9;
+  display: none;
+}
+
+/* display */
+
+.mobile {
+  display: block !important;
+}
+
+.wideSite {
+  display: none !important;
+}
+
+.wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.wrap.wrapMiddle {
+  max-width: 728px;
+}
+.card {
+  max-width: 1200px;
+  margin: 12px 0 28px;
+  padding: 20px 12px;
+  border-radius: 10px;
+  background: linear-gradient(180deg, var(--White) 40%, rgba(255, 255, 255, 0.6) 85%);
+  box-shadow: 0px 0px 10px 0px rgba(94, 94, 94, 0.15);
+  box-sizing: border-box;
+}
+.card.narrow {
+  max-width: 560px;
+}
+.card.medium {
+  max-width: 720px;
+}
+.card.fit {
+  margin: 12px 0 28px;
+}
+.cardWrap {
+  display: grid;
+  gap: 12px;
+}
+.cardWrap *.card {
+  margin: 0;
+}
+.card .title {
+  font: var(--body01);
+  font-weight: 700;
+  color: var(--DarkGray);
+}
+@media screen and (max-width: 360px) {
+  .wrap {
+    padding: 0 12px;
+  }
+}
+
+/* toast */
+
+.toast {
+  display: none;
+  position: fixed;
+  top: 80px;
+  z-index: 100;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 40px);
+  max-width: 728px;
+  padding: 8px 16px;
+  box-sizing: border-box;
+  text-align: center;
+  border-radius: 4px;
+}
+
+.toast[class*="Dark"] {
+  font: var(--body01);
+  color: var(--White);
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.toast[class*="Light"] {
+  font: var(--body01);
+  color: var(--Black);
+  background: rgba(255, 255, 255, 0.6);
+}
+
+@media screen and (min-width: 1024px) {
+  /* display */
+  .mobile {
+    display: none !important;
+  }
+  .wideSite {
+    display: block !important;
+  }
+  .card {
+    margin: 12px auto 32px;
+    padding: 28px 36px;
+  }
+  .card.fit {
+    margin: 12px 0 32px;
+  }
+  .cardWrap {
+    grid-template-columns: repeat(auto-fill, minmax(auto, 335px));
+  }
+
+  /* toast */
+  .toast {
+    top: 100px;
+  }
+}

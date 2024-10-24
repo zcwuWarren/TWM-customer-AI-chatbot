@@ -1,0 +1,21 @@
+:root {
+  --Orange: #ff6700;
+  --OrangeHover: #ff6d13;
+
+  --DarkGray: #191919;
+
+  --Red: #f34c27;
+  --Green: #0eaa7d;
+
+  --Blue400: #78829d;
+  --Blue900: #2d2d6c;
+
+  --White: #fff;
+  --Black: #000;
+  --Gray: #eaeaea;
+  --Gray300: #f6f6f6;
+  --Gray900: #717171;
+}
+
+@media screen and (min-width: 1024px) {
+}

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agent Chat</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+</head>
+
+<body>
+<h1>Agent Chat Interface</h1>
+<div>
+  <h3>Waiting Queue</h3>
+  <ul id="queueList"></ul>
+</div>
+
+<div>
+  <h3>Chat</h3>
+  <div id="chatWindow"></div>
+  <input type="text" id="chatInput" placeholder="Enter your message">
+  <button id="sendButton">Send</button>
+</div>
+
+<script>
+  let stompClient = null;
+  const accessToken = 'eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6W10sInVzZXJJZCI6MSwic3ViIjoiamFja0B0d20uY29tIiwiaWF0IjoxNzI0OTM5MjA4LCJleHAiOjE3Mjc1MzEyMDh9.wMFg7oo53PWc7mkqBvUpKCDOaulNWt3YPei0hFbRbAYPdq-Hs-JLbpXYQioheI3yF8kHZ9ndPbCR4ciOfXBKKg';  // 這裡應該使用 agent 的 JWT token
+  let currentChatSessionId = null;
+  let humanSupportQueueSubscription = null;
+
+  function connect() {
+    const socket = new SockJS('/ws');
+    stompClient = Stomp.over(socket);
+
+    const headers = {
+      'Authorization': 'Bearer ' + accessToken
+    };
+
+    stompClient.connect(headers, function(frame) {
+      console.log('Connected: ' + frame);
+      humanSupportQueueSubscription = stompClient.subscribe('/topic/humanSupportQueue', function(message) {
+        console.log('Received message from humanSupportQueue:', message.body);
+        const chatSessionId = message.body.replace(/"/g, '');
+        displayWaitingQueue(chatSessionId);
+      });
+    }, function(error) {
+      console.error('Could not connect to WebSocket server:', error);
+    });
+  }
+
+  function displayWaitingQueue(chatSessionId) {
+    const queueList = document.getElementById('queueList');
+    const listItem = document.createElement('li');
+    listItem.textContent = chatSessionId;
+    listItem.onclick = function() {
+      joinChat(chatSessionId);
+    };
+    queueList.appendChild(listItem);
+  }
+
+  function joinChat(chatSessionId) {
+    currentChatSessionId = chatSessionId;
+
+    if (humanSupportQueueSubscription) {
+      humanSupportQueueSubscription.unsubscribe();
+      console.log('Unsubscribed from humanSupportQueue');
+      humanSupportQueueSubscription = null;
+    }
+
+    stompClient.subscribe('/queue/agent/' + chatSessionId, function(message) {
+      try {
+        const parsedMessage = JSON.parse(message.body);
+        displayChatMessage(parsedMessage);
+      } catch (error) {
+        console.log("Received non-JSON message:", message.body);
+        const chatWindow = document.getElementById('chatWindow');
+        const messageElement = document.createElement('div');
+        messageElement.textContent = message.body; // 直接顯示原始訊息
+        chatWindow.appendChild(messageElement);
+      }
+    });
+
+    // 通知後端 agent 加入了該 chatSession
+    stompClient.send("/app/chat.agentJoin", {}, JSON.stringify({ chatSessionId: chatSessionId }));
+
+    // 從等待隊列中移除已加入的聊天
+    removeFromWaitingQueue(chatSessionId);
+  }
+
+  function removeFromWaitingQueue(chatSessionId) {
+    const queueList = document.getElementById('queueList');
+    const items = queueList.getElementsByTagName('li');
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].textContent === chatSessionId) {
+        queueList.removeChild(items[i]);
+        break;
+      }
+    }
+  }
+
+  function displayNotification(notification) {
+    const chatWindow = document.getElementById('chatWindow');
+    const notificationElement = document.createElement('div');
+    notificationElement.textContent = notification;
+    notificationElement.style.fontStyle = 'italic';
+    chatWindow.appendChild(notificationElement);
+  }
+
+  function displayChatMessage(message) {
+    // 如果訊息是 Agent 自己發送的（非回傳），那麼保留顯示
+    if (message.sender === 'Agent' && message.fromAgent) {
+      console.log('Displaying message sent by the agent:', message.content);
+    } else if (message.sender === 'Agent' && !message.fromAgent) {
+      // 如果訊息是從後端回傳，且 sender 也是 Agent，就不顯示
+      console.log('Ignoring message sent by the agent (received from server):', message.content);
+      return;
+    }
+
+    const chatWindow = document.getElementById('chatWindow');
+    const messageElement = document.createElement('div');
+    messageElement.textContent = message.sender + ': ' + message.content;
+    chatWindow.appendChild(messageElement);
+
+    // 保持視窗滾動到最新的消息
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+  }
+
+  document.getElementById('sendButton').onclick = function() {
+    const messageContent = document.getElementById('chatInput').value;
+    if (messageContent && currentChatSessionId) {
+      const chatMessage = {
+        chatSessionId: currentChatSessionId,
+        content: messageContent,
+        sender: 'Agent',
+        type: 'CHAT',
+        fromAgent: true  // 添加一個標記，表明這個訊息是 Agent 自己發送的
+      };
+      stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
+
+      // 在介面上顯示發送的消息
+      displayChatMessage(chatMessage);
+
+      document.getElementById('chatInput').value = '';  // 清空輸入框
+    }
+  };
+
+  connect();
+</script>
+</body>
+
+</html>

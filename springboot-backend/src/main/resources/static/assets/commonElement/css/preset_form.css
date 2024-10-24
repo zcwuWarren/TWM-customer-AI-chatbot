@@ -1,0 +1,387 @@
+input:focus,
+select:focus,
+textarea:focus-visible {
+  outline: unset;
+  outline-offset: 0;
+}
+
+select::-ms-expand {
+  display: none;
+}
+
+/* 送出按鈕 */
+
+/* input[type=submit] 
+   顏色/字級 > /assets/css/commonElement/preset_buttons.css
+ */
+
+input[type="submit"],
+input[type="submit"]:hover {
+  border: none;
+  cursor: pointer;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+/* 輸入框 + 下拉選單 共同 */
+
+.input,
+.select {
+  width: 100%;
+  position: relative;
+  display: grid;
+  gap: 8px;
+}
+
+.input label,
+.select label {
+  display: block;
+  font: var(--body01);
+  color: var(--DarkGray);
+}
+
+.input input,
+.input textarea {
+  font: var(--body01);
+  color: var(--DarkGray);
+}
+
+.input input[type="text"],
+.input input[type="number"],
+.input input[type="tel"],
+.input input[type="email"],
+.input input[type="password"],
+.input textarea,
+.select select,
+.file input[type="file"],
+.input input[type="date"] {
+  background: var(--Gray);
+  border: none;
+  box-sizing: border-box;
+  border-radius: 8px;
+  padding: 10px 12px;
+  width: 100%;
+}
+
+.input input[type="text"]::placeholder,
+.input input[type="number"]::placeholder,
+.input input[type="tel"]::placeholder,
+.input input[type="email"]::placeholder,
+.input input[type="password"]::placeholder,
+.input input[type="date"]::placeholder,
+.file input[type="file"]::placeholder {
+  color: var(--Gray900);
+}
+
+/* 輸入框 required */
+
+.input.required label span,
+.select.required label span {
+  color: var(--Orange);
+}
+
+/* 輸入框 disabled */
+
+.input.disabled input[type="text"]::placeholder {
+  color: var(--Blue400);
+}
+
+/* 輸入框 密碼 */
+
+.input.password .passwordInside {
+  position: relative;
+}
+
+.input.password .inputEyeBtn {
+  width: 24px;
+  height: 24px;
+  background-image: url(/assets/commonElement/img/Icon_Input_Eye_Close.svg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  filter: var(--Gray900Filter);
+  cursor: pointer;
+  position: absolute;
+  right: 24px;
+  top: calc(50% - 12px);
+}
+
+.input.password .inputEyeBtn.openEyes {
+  background-image: url(/assets/commonElement/img/Icon_Input_Eye_Open.svg);
+}
+
+.input.password input[type="text"],
+.input.password input[type="password"] {
+  padding-right: 48px;
+}
+
+/* 下拉選單 */
+
+.select select {
+  appearance: none;
+  font: var(--body01);
+  color: var(--DarkGray);
+  width: max-content;
+  padding-right: 32px;
+}
+
+.select select option {
+  background: var(--white);
+  color: var(--DarkGray);
+  padding: 12px;
+}
+
+.select {
+  transition: all linear 0.5s;
+  width: max-content;
+  min-width: min-content;
+  position: relative;
+}
+.select {
+  position: relative;
+  min-width: min-content;
+}
+.select select {
+  background-image: url(/assets/commonElement/img/Icon_Item_MenuArrow.svg);
+  background-size: 28px;
+  background-repeat: no-repeat;
+  background-position: calc(100% - 4px) center;
+}
+
+.select.disabled select {
+  color: var(--Blue400);
+}
+.select.disabled::after {
+  filter: var(--Blue400Filter);
+}
+/* input/select 併排 */
+
+.input .inputHalf,
+.select .inputHalf {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+/* 文字框 */
+
+textarea {
+  min-height: 10em;
+}
+
+/*  radio + checkbox */
+
+.radio,
+.checkbox {
+  display: grid;
+  gap: 8px;
+}
+
+.radio input,
+.checkbox input {
+  display: none;
+}
+
+.radio label,
+.checkbox label {
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font: var(--body01);
+  color: var(--Gray900);
+}
+
+.radio label:before {
+  content: "";
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-radius: 100%;
+  background-size: cover;
+  background-position: center;
+  border: 1px solid var(--Gray);
+  box-sizing: border-box;
+}
+
+.checkbox label:before {
+  content: "";
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-radius: 2px;
+  background-size: cover;
+  background-position: center;
+  border: 1px solid var(--Gray);
+  box-sizing: border-box;
+}
+
+/* radio + checkbox checked */
+
+.radio input:checked + label:before {
+  background-color: var(--Orange);
+  background-image: url(/assets/commonElement/img/Icon_Input_Radio.svg);
+}
+
+.checkbox input:checked + label:before {
+  background-color: var(--Orange);
+  background-image: url(/assets/commonElement/img/Icon_Input_Checkbox.svg);
+  border: none;
+}
+
+/* radio + checkbox disabled */
+
+.radio input:disabled + label,
+.checkbox input:disabled + label {
+  color: var(--Gray900);
+}
+
+.radio input:disabled + label:before,
+.checkbox input:disabled + label:before {
+  background-color: var(--Gray);
+}
+
+/* radio + checkbox 群組 - 左右排 */
+
+.radio .inputInline,
+.checkbox .inputInline {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+}
+
+/* switch */
+.switch label {
+  position: relative;
+  display: inline-block;
+  width: 56px;
+  height: 32px;
+  border-radius: 20px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--Gray);
+  border-radius: 20px;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 28px;
+  width: 28px;
+  left: 2px;
+  bottom: 2px;
+  border-radius: 50%;
+  background-color: var(--White);
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: var(--Orange);
+}
+input:checked + .slider:before {
+  -webkit-transform: translateX(24px);
+  -ms-transform: translateX(24px);
+  transform: translateX(24px);
+}
+
+/* 錯誤/提示訊息 */
+
+.input .state,
+.select .state,
+.radio .state,
+.checkbox .state {
+  font: var(--body01);
+  color: var(--Orange);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+}
+
+.input .state.warning,
+.select .state.warning,
+.radio .state.warning,
+.checkbox .state.warning {
+  display: none;
+}
+
+.input .state a,
+.select .state a,
+.radio .state a,
+.checkbox .state a {
+  text-decoration: underline;
+  color: var(--Orange);
+}
+
+.input.error .state.warning,
+.select.error .state.warning,
+.radio.error .state.warning,
+.checkbox.error .state.warning {
+  display: block;
+}
+
+.input.error .state.notice,
+.select.error .state.notice,
+.radio.error .state.notice,
+.checkbox.error .state.notice {
+  display: none;
+}
+
+.input.error input[type="text"],
+.input.error input[type="number"],
+.input.error input[type="tel"],
+.input.error input[type="email"],
+.input.error input[type="password"],
+.input.error input[type="date"],
+.input.error textarea,
+.select.error select,
+.radio.error .state,
+.checkbox.error .state {
+  border-color: var(--Red);
+}
+
+/* file */
+.file {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+.file input[type="file"] {
+  -webkit-appearance: none;
+}
+.file input[type="file"]:disabled::placeholder {
+  color: var(--Blue400);
+}
+input[type="file"]::-webkit-file-upload-button {
+  -webkit-appearance: none;
+  display: none;
+}
+
+@media screen and (min-width: 1024px) {
+  .input.password .inputEyeBtn {
+    right: 32px;
+  }
+  .input.password input[type="text"],
+  .input.password input[type="password"] {
+    padding-right: 56px;
+  }
+}

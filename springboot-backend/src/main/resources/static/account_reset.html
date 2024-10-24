@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>重設密碼</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Sans:wght@400;500;700&display=swap" />
+    <link rel="stylesheet" href="./assets/commonElement/css/reset.css" />
+    <link rel="stylesheet" href="./assets/commonElement/css/preset_colors.css" />
+    <link rel="stylesheet" href="./assets/commonElement/css/preset_fonts.css" />
+    <link rel="stylesheet" href="./assets/commonElement/css/preset_buttons.css" />
+    <link rel="stylesheet" href="./assets/commonElement/css/preset_form.css" />
+    <link rel="stylesheet" href="./assets/commonElement/css/pages.css" />
+    <link rel="stylesheet" href="./assets/commonElement/css/header.css" />
+    <link rel="stylesheet" href="./assets/commonElement/css/footer.css" />
+    <link rel="stylesheet" href="./assets/css/account.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="./assets/commonElement/js/preset_form.js"></script>
+    <script src="./assets/commonElement/js/header.js"></script>
+    <script>
+      $(document).ready(function () {
+        header();
+        passwordEyes();
+
+        let captchaId = '';
+
+        function loadCaptcha() {
+          fetch('/api/auth/captcha')
+                  .then(response => response.json())
+                  .then(data => {
+                    captchaId = data.captchaId;
+                    $('#captchaImage').attr('src', `data:image/png;base64,${data.captchaImage}`);
+                  });
+        }
+
+            function isValidPassword(password) {
+                  // Password must be longer than 8 characters, contain at least one number, one uppercase and one lowercase letter
+                  const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+                  return passwordPattern.test(password);
+            }
+
+            function showError(element, message) {
+                  element.text(message);
+                  element.css("visibility", "visible");
+                  element.css("display", "block");
+              }
+
+            function hideError(element) {
+                  element.css("visibility", "hidden");
+              }
+
+            function checkFields() {
+              const newPassword = $('input[name="inputPassword"]').val();
+              const confirmNewPassword = $('input[name="inputConfirmPassword"]').val();
+              const captcha = $('input[name="captcha"]').val();
+
+              if (newPassword && confirmNewPassword && captcha && captcha.length === 4) {
+                  $('#btnLdisable').hide();
+                  $('#btnLfill').show();
+              } else {
+                  $('#btnLfill').hide();
+                  $('#btnLdisable').show();
+              }
+            }
+
+          // Validate password format
+            $('input[name="inputPassword"]').on('keyup change input', function () {
+                const password = $(this).val();
+                if (!password) {
+                    hideError($("#passwordError"));
+                } else if (!isValidPassword(password)) {
+                    showError($("#passwordError"), "超過 8 碼的英數大小寫混合字");
+                } else {
+                    hideError($("#passwordError"));
+                }
+                checkFields(); // Check if the form is ready for submission
+            });
+
+          // Validate confirmPassword format
+          $('input[name="inputConfirmPassword"]').on('keyup change input', function () {
+              const confirmPassword = $(this).val();
+              const password = $('input[name="inputPassword"]').val();
+              if (!confirmPassword) {
+                  hideError($("#InconsistentPasswordError"));
+              } else if (confirmPassword !== password) {
+                  showError($("#InconsistentPasswordError"), "密碼和確認密碼不一致");
+              } else {
+                  hideError($("#InconsistentPasswordError"));
+              }
+              checkFields(); // Check if the form is ready for submission
+          });
+
+          // Validate captcha
+            $('input[name="captcha"]').on('keyup change input', function () {
+                  const captcha = $(this).val();
+                if (!captcha) {
+                    hideError($("#captchaError"));
+                } else if (!captcha || captcha.length !== 4) {
+                    showError($("#captchaError"), "驗證碼格式錯誤");
+                } else {
+                    hideError($("#captchaError"));
+                }
+                checkFields(); // Check if the form is ready for submission
+            });
+
+            function resetPassword() {
+              const token = localStorage.getItem('resetToken');
+              const newPassword = $('input[name="inputPassword"]').eq(0).val();
+              const confirmNewPassword = $('input[name="inputConfirmPassword"]').eq(0).val();
+              const captcha = $('#inputCaptcha').val();
+
+              if (newPassword !== confirmNewPassword) {
+                alert('密碼和確認密碼不一致');
+                loadCaptcha();
+                checkFields();
+                return;
+              }
+
+              if (isValidPassword(newPassword) === false) {
+                  alert('超過 8 碼的英數大小寫混合字');
+                  loadCaptcha();
+                  checkFields();
+                  return;
+              }
+
+              $.ajax({
+                url: '/api/auth/account_reset',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ newPassword, captchaId, captcha, token }),
+                success: function(data) {
+                  alert('重設密碼成功');
+                  // $('.accountText').text(data.email);
+                  localStorage.removeItem('resetToken');
+                  window.location.href = './account_login.html';
+                },
+                error: function(xhr) {
+                  alert('重設密碼失敗：' + xhr.responseText);
+                  loadCaptcha();
+                }
+              });
+            }
+
+        // 頁面加載時獲取驗證碼
+        loadCaptcha();
+
+        //為按鈕添加點擊事件
+        $('.btnLfill').click(function(e) {
+          e.preventDefault();
+          resetPassword();
+        });
+
+        // 點擊驗證碼圖片時重新加載
+        $('#captchaImage').click(function() {
+          loadCaptcha();
+        });
+      });
+    </script>
+  </head>
+
+  <body>
+    <header>
+      <a class="logo" href="/frame.html">
+        <img src="./assets/commonElement/img/Logo_twm_White.svg" alt="台灣大哥大" />
+      </a>
+    </header>
+
+    <main>
+      <div class="wrap">
+        <div class="card narrow">
+          <h1>主帳號重設密碼</h1>
+          <form action="">
+            <div class="resetPasswordForm">
+              <p>請輸入您的新密碼以進行密碼重設作業，若您沒有申請，請離開此頁面。</p>
+              <div class="input">
+                <label for="inputext"></label>
+                <div class="accountText"></div>
+              </div>
+              <div class="input password">
+                <label for="inputPassword">請輸入新密碼</label>
+                <div class="passwordInside">
+                  <input type="password" name="inputPassword" placeholder="密碼為超過 8 碼的英數大小寫混合字" />
+                </div>
+                <div class="state warning">密碼錯誤</div>
+                <div id="passwordError" class="state notice" style="visibility: hidden; display: block;">超過 8 碼的英數大小寫混合字</div>
+              </div>
+              <div class="input password error">
+                <label for="inputPassword">請再次輸入新密碼</label>
+                <div class="passwordInside">
+                  <input type="password" name="inputConfirmPassword" placeholder="再次輸入密碼" />
+                </div>
+                <div id="InconsistentPasswordError" class="state warning" style="visibility: hidden; display: block;">密碼和確認密碼不一致</div>
+                <div class="state notice">超過8碼的英數大小寫混合字</div>
+              </div>
+              <div class="veriCodeBox">
+                <div class="input">
+                  <label for="inputCaptcha">驗證碼</label>
+                  <div class="inputHalf">
+                    <input type="text" id="inputCaptcha" name="captcha" placeholder="請輸入驗證碼" />
+                    <div class="veriImg">
+                      <img id="captchaImage" src="" alt="驗證碼" />
+                    </div>
+                  </div>
+                  <div class="state warning" id="captchaError" style="display:none;">驗證碼錯誤</div>
+                </div>
+              </div>
+              <div class="input">
+                <label for="inputext"></label>
+                <div class="accountText"></div>
+              </div>
+              <div class="btnBox">
+                <a class="btn btnLfill">更改密碼</a>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <footer>
+        <div class="wrap">
+          <p><span>Copyright © 台灣大哥大股份有限公司. </span><span>All Rights Reserved.</span></p>
+        </div>
+      </footer>
+    </main>
+    <script>
+      $(document).ready(function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+        if (token) {
+          localStorage.setItem('resetToken', token);
+        }
+      });
+    </script>
+  </body>
+  <script>
+    $(document).ready(function () {
+      header();
+
+      /** 顯示password */
+      passwordEyes();
+      // /assets/commonElement/css/preset_form.css
+      // /assets/commonElement/v.x/js/preset_form.js
+    });
+  </script>
+</html>

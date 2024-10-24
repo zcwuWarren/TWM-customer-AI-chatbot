@@ -1,0 +1,29 @@
+header {
+  background: var(--Black);
+  position: sticky;
+  top: 0;
+  z-index: 99;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  z-index: 15;
+  padding: 0 20px;
+}
+
+header .logo img {
+  display: block;
+  width: 124px;
+}
+
+@media screen and (min-width: 1024px) {
+  header {
+    height: 60px;
+    gap: 96px;
+    justify-content: space-between;
+  }
+
+  header .logo img {
+    width: 140px;
+  }
+}

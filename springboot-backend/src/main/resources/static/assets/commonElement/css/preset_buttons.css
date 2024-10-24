@@ -1,0 +1,88 @@
+/* 一般按鈕 */
+
+button {
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
+  box-sizing: content-box;
+}
+
+.btn,
+.file label {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 6px;
+  text-wrap: nowrap;
+  cursor: pointer;
+}
+
+/* btn class名字 
+.btnLfill {}
+.btnLblack {}
+.btnLdisable {}
+.btnSfill {}
+.btnSblack {}
+.btnSdisable {}
+.withIcon{}
+*/
+
+.btn[class*="btnL"],
+.file label {
+  font: var(--body01);
+  padding: 6px 14px;
+  transition: all 0.15s ease-out;
+}
+
+.btn[class*="btnS"] {
+  font: var(--body01);
+  padding: 4px 14px;
+  transition: all 0.15s ease-out;
+}
+
+.btn[class*="fill"],
+.file label {
+  background: var(--Orange);
+  color: var(--White);
+  border: none;
+}
+.btn[class*="fill"]:hover {
+  background: var(--OrangeHover);
+}
+
+.btn[class*="black"] {
+  background: var(--Gray);
+  color: var(--DarkGray);
+  border: none;
+}
+.btn[class*="black"]:hover {
+  background: var(--Gray300);
+}
+
+.btn[class*="disable"],
+.file.disable label {
+  background: var(--Blue400);
+  color: var(--White);
+  border: none;
+  cursor: auto;
+}
+
+.btn[class*="withIcon"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.btn[class*="withIcon"] img {
+  display: block;
+  width: 28px;
+  height: 28px;
+}
+
+.btnBox {
+  display: flex;
+}
+
+@media screen and (min-width: 1024px) {
+}

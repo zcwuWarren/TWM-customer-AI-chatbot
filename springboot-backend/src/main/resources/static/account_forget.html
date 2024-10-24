@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>忘記密碼</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Sans:wght@400;500;700&display=swap" />
+    <link rel="stylesheet" href="./assets/commonElement/css/reset.css" />
+    <link rel="stylesheet" href="./assets/commonElement/css/preset_colors.css" />
+    <link rel="stylesheet" href="./assets/commonElement/css/preset_fonts.css" />
+    <link rel="stylesheet" href="./assets/commonElement/css/preset_buttons.css" />
+    <link rel="stylesheet" href="./assets/commonElement/css/preset_form.css" />
+    <link rel="stylesheet" href="./assets/commonElement/css/pages.css" />
+    <link rel="stylesheet" href="./assets/commonElement/css/header.css" />
+    <link rel="stylesheet" href="./assets/commonElement/css/footer.css" />
+    <link rel="stylesheet" href="./assets/css/account.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="./assets/commonElement/js/preset_form.js"></script>
+    <script src="./assets/commonElement/js/header.js"></script>
+    <script>
+      $(document).ready(function() {
+        // 獲取驗證碼
+        function loadCaptcha() {
+          $.get("/api/auth/captcha", function(data) {
+            $("#captchaImage").attr("src", "data:image/png;base64," + data.captchaImage);
+            $("#captchaId").val(data.captchaId);
+          });
+        }
+
+        function isValidEmail(email) {
+          // Simple email regex pattern for basic validation
+          const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          return emailPattern.test(email);
+        }
+
+        function showError(element, message) {
+          element.text(message);
+          element.css("visibility", "visible");
+          element.css("display", "block");
+        }
+
+        function hideError(element) {
+          element.css("visibility", "hidden");
+        }
+
+        function checkFields() {
+          const email = $('input[name="mainAccount"]').val();
+          const captcha = $('input[name="captchaInput"]').val();
+
+          if (email && captcha && captcha.length === 4) {
+            $('#btnLdisable').hide();
+            $('#btnLfill').show();
+          } else {
+            $('#btnLfill').hide();
+            $('#btnLdisable').show();
+          }
+        }
+
+
+        // Validate email format
+        $('input[name="mainAccount"]').on('keyup change input', function () {
+          const email = $(this).val();
+          if (!email) {
+            showError($("#emailEmptyError"), "內容不可為空白，請輸入 E-mail");
+            hideError($("#emailError"));
+          } else if (!isValidEmail(email)) {
+            showError($("#emailError"), "格式有誤，請重新輸入");
+            hideError($("#emailEmptyError"));
+          } else {
+            hideError($("#emailEmptyError"));
+            hideError($("#emailError"));
+          }
+          checkFields(); // Check if the form is ready for submission
+        });
+
+        // Validate captcha
+        $('input[name="captchaInput"]').on('keyup change input', function () {
+          const captcha = $(this).val();
+          if (!captcha) {
+            hideError($("#captchaError"));
+          } else if (!captcha || captcha.length !== 4) {
+            showError($("#captchaError"), "驗證碼格式錯誤");
+          } else {
+            hideError($("#captchaError"));
+          }
+          checkFields(); // Check if the form is ready for submission
+        });
+
+        // 頁面加載時獲取驗證碼
+        loadCaptcha();
+
+        // 點擊驗證碼圖片時刷新
+        $("#captchaImage").click(function() {
+          loadCaptcha();
+        });
+
+        // 表單提交
+        function forgotPassword() {
+          const mainAccount = $("#mainAccount").val();
+          const captcha = $("#captchaInput").val();
+          const captchaId = $("#captchaId").val();
+
+          const formData = {
+            mainAccount,
+            captchaId,
+            captcha
+          };
+
+          $.ajax({
+            url: "/api/auth/forgot-password",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(formData),
+            success: function(response) {
+              alert("重置密碼的郵件已發送");
+            },
+            error: function(xhr) {
+              alert("錯誤：" + xhr.responseText);
+              // 驗證碼錯誤時刷新驗證碼
+              loadCaptcha();
+            }
+          });
+        }
+
+        // 為表單提交按鈕添加點擊事件
+        $(".btnLfill").click(function(e) {
+          e.preventDefault();
+          forgotPassword();
+        });
+      });
+    </script>
+  </head>
+
+  <body>
+    <header>
+      <a class="logo" href="/frame.html">
+        <img src="./assets/commonElement/img/Logo_twm_White.svg" alt="台灣大哥大" />
+      </a>
+    </header>
+
+    <main>
+      <div class="wrap">
+        <div class="card narrow">
+          <h1>忘記密碼</h1>
+          <form id="forgotPasswordForm">
+            <div class="loginForm">
+              <div class="input">
+                <label for="mainAccount">主帳號</label>
+                <input type="email" id="mainAccount" name="mainAccount" placeholder="請輸入E-mail" required />
+                <div id="emailError" class="state warning" style="visibility: hidden; display: block;">格式有誤，請重新輸入</div>
+                <div id="emailEmptyError" class="state warning" style="visibility: hidden; display: block;">內容不可為空白，請輸入E-mail</div>
+              </div>
+              <div class="veriCodeBox">
+                <div class="input">
+                  <label for="captchaInput">驗證碼</label>
+                  <div class="inputHalf">
+                    <input type="text" id="captchaInput" name="captchaInput" placeholder="請輸入驗證碼" required />
+                    <div class="veriImg">
+                      <img id="captchaImage" src="" alt="驗證碼" />
+                    </div>
+                  </div>
+                  <div class="state warning" id="captchaError" style="display:none;">驗證碼錯誤</div>
+                </div>
+              </div>
+              <input type="hidden" id="captchaId" name="captchaId" />
+              <div class="btnBox">
+                <button type="submit" class="btn btnLfill">發送重置密碼郵件</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <footer>
+        <div class="wrap">
+          <p><span>Copyright © 台灣大哥大股份有限公司. </span><span>All Rights Reserved.</span></p>
+        </div>
+      </footer>
+    </main>
+  </body>
+  <script>
+    $(document).ready(function () {
+      header();
+    });
+  </script>
+</html>

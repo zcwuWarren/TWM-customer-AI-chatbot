@@ -1,0 +1,69 @@
+:root {
+  --fontFamily: "Noto Sans TC", "Noto Sans SC", "Noto Sans JP", "Noto Sans KR",
+    "Noto Sans", sans-serif;
+  --fontSize13: 13px;
+  --fontSize15: 15px;
+  --fontSize16: 16px;
+  --fontSize18: 18px;
+  --fontSize26: 26px;
+  --fontSize30: 30px;
+  --fontWeightRegular: 400;
+  --fontWeightMedium: 500;
+  --fontWeightBold: 700;
+  /* 文字元件 */
+  --title01: var(--fontWeightBold) var(--fontSize26) / 1.5em var(--fontFamily);
+  --title02: var(--fontWeightBold) var(--fontSize18) / 1.5em var(--fontFamily);
+  --body01: var(--fontWeightMedium) var(--fontSize15) / 1.5em var(--fontFamily);
+  --body02: var(--fontWeightMedium) var(--fontSize13) / 1.5em var(--fontFamily);
+}
+
+@media screen and (min-width: 1024px) {
+  :root {
+    /* 文字元件 */
+    --title01: var(--fontWeightBold) var(--fontSize30) / 1.5em var(--fontFamily);
+    --title02: var(--fontWeightBold) var(--fontSize18) / 1.5em var(--fontFamily);
+    --body01: var(--fontWeightMedium) var(--fontSize16) / 1.5em
+      var(--fontFamily);
+    --body02: var(--fontWeightMedium) var(--fontSize13) / 1.5em
+      var(--fontFamily);
+  }
+}
+
+/* line-height：
+以下：+ 4px
+16以上：+ 8px
+24以上：+ 12px
+32以上：+ 16px
+40以上：+ 20px
+56以上：+ 24px
+ */
+
+body {
+  font: var(--body01);
+}
+
+.paragraph p {
+  margin-bottom: 0.75em;
+}
+
+a {
+  cursor: pointer;
+  color: var(--Orange);
+}
+
+a:hover {
+  color: var(--OrangeHover);
+}
+
+
+p a:hover,
+ol li a:hover,
+p a:active,
+ol li a:active {
+  color: var(--OrangeHover);
+}
+
+
+
+@media screen and (min-width: 1024px) {
+}

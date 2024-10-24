@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="zh-hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Components</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Sans:wght@400;500;700&display=swap" />
+    <link rel="stylesheet" href="./assets/commonElement/css/reset.css" />
+    <link rel="stylesheet" href="./assets/commonElement/css/preset_colors.css" />
+    <link rel="stylesheet" href="./assets/commonElement/css/preset_fonts.css" />
+    <link rel="stylesheet" href="./assets/commonElement/css/preset_buttons.css" />
+    <link rel="stylesheet" href="./assets/commonElement/css/preset_form.css" />
+    <link rel="stylesheet" href="./assets/commonElement/css/pages.css" />
+    <link rel="stylesheet" href="./assets/commonElement/css/header.css" />
+    <link rel="stylesheet" href="./assets/commonElement/css/footer.css" />
+    <link rel="stylesheet" href="./assets/commonElement/css/popup.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="./assets/commonElement/js/preset_form.js"></script>
+    <script src="./assets/commonElement/js/header.js"></script>
+    <script src="./assets/commonElement/js/popup.js"></script>
+    <style>
+      article {
+        margin-bottom: 44px;
+      }
+
+      h2,
+      h3,
+      h4 {
+        margin: 24px 0 12px;
+      }
+
+      .tabWrap {
+        overflow: hidden;
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <a class="logo" href="/frame.html">
+        <img src="./assets/commonElement/img/Logo_twm_White.svg" alt="" />
+      </a>
+    </header>
+
+    <main>
+      <article>
+        <div class="wrap">
+          <h1>Components</h1>
+        </div>
+      </article>
+
+      <article>
+        <div class="wrap" style="background-color: var(--Gray); margin-bottom: 8px">
+          <p>wrap</p>
+          <div class="card">
+            <p>card</p>
+          </div>
+          <div class="card narrow">
+            <p>card narrow</p>
+          </div>
+          <div class="card fit">
+            <p>card fit</p>
+          </div>
+          <p>cardWrap</p>
+          <div class="cardWrap">
+            <div class="card fit">
+              <p>card fit</p>
+            </div>
+            <div class="card fit">
+              <p>card fit</p>
+            </div>
+          </div>
+        </div>
+        <div class="wrap wrapMiddle" style="background-color: var(--Gray); margin-bottom: 8px">
+          <p>wrap wrapMiddle</p>
+        </div>
+
+        <div class="wrap">
+          <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap">
+            <a class="btn btnLfill btnPopup">開啟popup</a>
+            <a class="btn btnLoutline btnToastDark">顯示taost(深色)</a>
+            <a class="btn btnLoutline btnToastLight">顯示taost(淺色)</a>
+          </div>
+        </div>
+
+        <div class="toast toastDark">Toast 提示文字</div>
+        <div class="toast toastLight">Toast 提示文字</div>
+
+        <div class="popup">
+          <div class="main">
+            <img class="btnClose" src="./assets/commonElement/img/Icon_Item_Close.svg" alt="" />
+
+            <div class="container">
+              <div class="title">會員限定功能</div>
+              <div class="text">這集內容不能在無網路條件下收聽</div>
+            </div>
+
+            <div class="btnBox">
+              <a class="btn btnSblack">取消</a>
+              <a class="btn btnSfill">確認</a>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="Colors">
+        <div class="wrap">
+          <h2>Colors</h2>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap">
+            <div style="background: var(--Orange)">Orange</div>
+            <div style="background: var(--OrangeHover)">OrangeHover</div>
+            <div style="background: var(--DarkGray)">DarkGray</div>
+            <div style="background: var(--Red)">Red</div>
+            <div style="background: var(--White)">White</div>
+            <div style="background: var(--Black)">Black</div>
+            <div style="background: var(--Gray)">Gray</div>
+            <div style="background: var(--Gray300)">Gray300</div>
+            <div style="background: var(--Gray900)">Gray900</div>
+            <div style="background: var(--Blue400)">Blue400</div>
+            <div style="background: var(--Blue900)">Blue900</div>
+            <div style="background: var(--Green)">Green</div>
+            <div style="background: var(--GradientPurple)">GradientPurple</div>
+            <div style="background: var(--GradientOrange)">GradientOrange</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="Fonts">
+        <div class="wrap">
+          <h2>Fonts</h2>
+          <div style="font: var(--title01)">title01 標題字</div>
+          <div style="font: var(--title02)">title02 標題字</div>
+          <div style="font: var(--body01)">body01 內文字</div>
+          <div style="font: var(--body02)">body02 內文字</div>
+        </div>
+      </article>
+
+      <article class="Buttons">
+        <div class="wrap">
+          <section class="Buttons">
+            <h2>Buttons</h2>
+
+            <h3>Buttons</h3>
+            <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap">
+              <a class="btn btnLfill">btn btnLfill</a>
+              <a class="btn btnLblack">btn btnLblack</a>
+              <a class="btn btnLdisable">btn btnLdisable</a>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap">
+              <a class="btn btnSfill">btn btnSfill</a>
+              <a class="btn btnSblack">btn btnSblack</a>
+              <a class="btn btnSdisable">btn btnSdisable</a>
+            </div>
+
+            <h3>Buttons withIcon</h3>
+            <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap">
+              <a class="btn btnLfill withIcon"> btnLfill<img src="./assets/commonElement/img/Icon_btn_Stop.svg" /> </a>
+              <a class="btn btnLdisable withIcon"> <img src="./assets/commonElement/img/Icon_btn_Stop.svg" />btnLdisable </a>
+            </div>
+          </section>
+        </div>
+      </article>
+
+      <article class="Form">
+        <div class="wrap wrapMiddle">
+          <h2>Form</h2>
+
+          <form action="">
+            <section class="fileSection">
+              <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap">
+                <div class="file">
+                  <input id="file3" type="file" />
+                  <label type="button" for="file3"> 上傳 </label>
+                </div>
+
+                <div class="file disable">
+                  <input id="file2" type="file" disabled />
+                  <label type="button" for="file2"> 上傳 </label>
+                </div>
+              </div>
+            </section>
+
+            <section class="textSection">
+              <div class="input">
+                <label for="inputext">input text</label>
+                <input type="text" name="inputext" placeholder="文字" />
+                <div class="state warning">warning</div>
+              </div>
+
+              <div class="input disabled">
+                <label for="inputext">input disabled</label>
+                <input type="text" name="inputext" placeholder="禁止輸入 &lt;div class='input disabled'&gt;" disabled />
+                <div class="state warning">warning</div>
+              </div>
+
+              <div class="input">
+                <label for="inpuNotice">input notice</label>
+                <input type="text" placeholder="預設顯示 notice 提示文字" />
+                <div class="state warning">warning</div>
+                <div class="state notice">
+                  <p>提醒：英數大小寫需相同，不需包含「-」符號</p>
+                </div>
+              </div>
+
+              <div class="input error">
+                <label for="inpuError">input error</label>
+                <input type="text" name="inpuError" placeholder="錯誤狀態 &lt;div class='input error'&gt; 顯示 warning 錯誤訊息" />
+                <div class="state warning">
+                  <p>錯誤訊息</p>
+                </div>
+              </div>
+
+              <div class="input">
+                <label for="inputNumber">input number</label>
+                <input type="number" name="inputNumber" placeholder="數字" />
+                <div class="state warning">warning</div>
+              </div>
+
+              <div class="input">
+                <label for="inputTel">input tel</label>
+                <input type="tel" name="inputTel" placeholder="電話" />
+                <div class="state warning">warning</div>
+              </div>
+
+              <div class="input">
+                <label for="inputEmail">input email</label>
+                <input type="email" name="inputEmail" placeholder="信箱" />
+                <div class="state warning">warning</div>
+              </div>
+
+              <div class="input password">
+                <label for="inputPassword">input password</label>
+                <div class="passwordInside">
+                  <input type="password" name="inputPassword" placeholder="密碼" />
+                </div>
+                <div class="state warning">warning</div>
+                <div class="state notice">超過8碼的英數大小寫混合字</div>
+              </div>
+
+              <div class="input">
+                <label for="inputDate">date</label>
+                <input type="date" name="inputDate" placeholder="YYYY/MM/DD" />
+                <div class="state warning">warning</div>
+              </div>
+
+              <div class="input">
+                <label>textarea</label>
+                <textarea name="textarea01" placeholder="textarea"></textarea>
+              </div>
+            </section>
+
+            <section class="selectSection">
+              <div class="select">
+                <select name="select01">
+                  <option value="" disabled selected>select</option>
+                  <option value="">option</option>
+                  <option value="">option</option>
+                </select>
+              </div>
+
+              <div class="select disabled">
+                <select name="select01" disabled>
+                  <option value="" disabled selected>select</option>
+                  <option value="">option</option>
+                  <option value="">option</option>
+                </select>
+              </div>
+            </section>
+
+            <section class="radioSection checkboxSection">
+              <div class="radio">
+                <input type="radio" name="radioRow" id="radioRow1" value="" />
+                <label for="radioRow1">單選 radio row</label>
+              </div>
+
+              <div class="radio error">
+                <div class="inputInline">
+                  <input type="radio" name="radioInline" id="radioInline1" value="" />
+                  <label for="radioInline1">radio inline</label>
+                  <input type="radio" name="radioInline" id="radioInline2" value="" checked />
+                  <label for="radioInline2">radio checked</label>
+                  <input type="radio" name="radioInline" id="radioInline3" value="" disabled />
+                  <label for="radioInline3">radio disabled</label>
+                </div>
+                <div class="state warning">warning</div>
+              </div>
+
+              <div class="checkbox">
+                <input type="checkbox" name="checkboxRow" id="checkboxRow1" value="" />
+                <label for="checkboxRow1">多選 checkbox</label>
+              </div>
+
+              <div class="checkbox inline">
+                <div class="inputInline">
+                  <input type="checkbox" name="checkboxInline" id="checkboxInline1" value="" />
+                  <label for="checkboxInline1">checkbox inline</label>
+                  <input type="checkbox" name="checkboxInline" id="checkboxInline2" value="" checked />
+                  <label for="checkboxInline2">checkbox checked</label>
+                  <input type="checkbox" name="checkboxInline" id="checkboxInline3" value="" disabled />
+                  <label for="checkboxInline3">checkbox disabled</label>
+                </div>
+                <div class="state warning">warning</div>
+              </div>
+
+              <div class="switch">
+                <label class="">
+                  <input type="checkbox" />
+                  <span class="slider"></span>
+                </label>
+              </div>
+              <div class="switch">
+                <label class="">
+                  <input type="checkbox" checked />
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </section>
+          </form>
+        </div>
+      </article>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <p><span>Copyright © 台灣大哥大股份有限公司. </span><span>All Rights Reserved.</span></p>
+      </div>
+    </footer>
+  </body>
+  <script>
+    $(document).ready(function () {
+      header();
+
+      /** 顯示taost */
+      $(".btnToastDark").click(function () {
+        $(".toastDark").fadeIn().delay(2e3).fadeOut();
+      });
+      $(".btnToastLight").click(function () {
+        $(".toastLight").fadeIn().delay(2e3).fadeOut();
+      });
+      // taost();
+      // /assets/commonElement/css/pages.css
+      // /assets/commonElement/js/pages.js
+
+      /** 開啟popup */
+      popup();
+      // /assets/commonElement/css/popup.css
+      // /assets/commonElement/js/popup.js
+
+      passwordEyes();
+      // /assets/commonElement/css/preset_form.css
+      // /assets/commonElement/js/preset_form.js
+    });
+  </script>
+</html>

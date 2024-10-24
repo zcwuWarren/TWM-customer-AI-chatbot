@@ -1,0 +1,44 @@
+.card {
+  margin-top: 24px;
+  overflow: hidden;
+}
+.card .container {
+  display: grid;
+  gap: 16px;
+  justify-items: center;
+}
+h1 {
+  font: var(--title02);
+  color: var(--DarkGray);
+  margin: -20px -12px 20px;
+  padding: 20px 12px;
+  background: var(--Gray);
+}
+.loginForm {
+  display: grid;
+  gap: 16px;
+}
+.loginForm .titleBox {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.accountText {
+  font: var(--title02);
+  color: var(--Orange);
+}
+.btnBox {
+  justify-content: center;
+}
+.btnBox a:not(.btn) {
+  text-decoration: underline;
+}
+@media screen and (min-width: 1024px) {
+  .card {
+    margin-top: 52px;
+  }
+  h1 {
+    margin: -28px -36px 28px;
+    padding: 28px 36px;
+  }
+}
